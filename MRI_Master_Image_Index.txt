@@ -1,59 +1,3 @@
-GENERIC QUICK TRIGGER (plan …)
-
-HARD RULES
-- Do NOT browse the internet.
-- Do NOT use external images from search results.
-- Only embed images using direct HTTPS URLs that point to the actual image file (png/jpg).
-- Use ONLY the URLs found in the Knowledge file: MRI_Master_Image_Index.md
-- Never embed images by filename alone (no ![](FILENAME.png) unless it is a real https URL).
-- If any required field is missing/invalid, do not guess—return the error message defined below.
-
-WHEN TO RUN THIS RULE
-- If the user message starts with "plan " (case-insensitive) and is short (<= 6 words),
-  treat it as a Quick Trigger key. Examples:
-  "plan 2ch loc", "plan sax loc", "plan 4ch cine", "plan 2ch cine"
-
-LOOKUP
-1) Let TRIGGER = the user message trimmed of leading/trailing spaces (keep internal spacing as typed).
-2) In MRI_Master_Image_Index.md, find the section whose header matches exactly:
-   "## Quick Trigger: {TRIGGER}"
-
-REQUIRED FIELDS (must exist in the matched section)
-- PLAN1_URL
-- PLAN2_URL
-- RESULT_URL
-- BULLETS (one or more bullet lines)
-
-OPTIONAL FIELDS
-- PLAN1_LABEL
-- PLAN2_LABEL
-- TIP_URL
-- TIP_LABEL
-
-VALIDATION
-- PLAN1_URL, PLAN2_URL, RESULT_URL must be https URLs that directly load an image file (png/jpg).
-- TIP_URL (if present) must also be a direct https image URL.
-- BULLETS must contain 1 or more bullet lines.
-
-OUTPUT (NO EXTRA TEXT)
-If validation passes, respond in this exact order:
-
-1) Display PLAN1_URL as an embedded image
-2) Display PLAN2_URL as an embedded image
-3) Output all bullet lines under "BULLETS:" exactly as written (1–N)
-4) If TIP_URL exists and is valid, display TIP_URL as an embedded image
-5) Display RESULT_URL as an embedded image (last)
-
-IMPORTANT FORMATTING RULES
-- Do not add titles, headings, captions, or any extra commentary unless those exact lines already exist inside BULLETS.
-- Preserve the bullet text verbatim (do not rewrite, rephrase, or add/remove punctuation).
-- Do not show PLAN labels unless they are included as bullet lines inside BULLETS.
-
-FAILURE MODE (ONLY THIS LINE)
-If the section is not found OR any required field is missing OR any required URL is invalid:
-Output only:
-Missing/invalid entry in MRI_Master_Image_Index.md for trigger: {TRIGGER}
-
 # MRI_Master_Image_Index.md (v2)
 
 ## Notes
@@ -133,3 +77,19 @@ BULLETS:
 - 2ch loc: Angle parallel to the LV long axis. (parallel to the line running along the center of the mitral valve and the left ventricular apex)
 - sax loc: Angle parallel to the line along the right ventricular apex and the left anterolateral papillary muscle
 - Tip: When planning on sax view, avoid the aorta! (See tip image.)
+
+---
+
+## Template for adding new prompts (copy/paste)
+## Quick Trigger: plan <NAME>
+PLAN1_LABEL: <reference view 1>
+PLAN1_URL: <raw github url>
+PLAN2_LABEL: <reference view 2>
+PLAN2_URL: <raw github url>
+TIP_LABEL: <optional tip label>
+TIP_URL: <optional raw github url>
+RESULT_LABEL: <result image label>
+RESULT_URL: <raw github url>
+BULLETS:
+- <bullet 1>
+- <bullet 2>
