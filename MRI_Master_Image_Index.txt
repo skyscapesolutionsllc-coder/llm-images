@@ -1,0 +1,135 @@
+GENERIC QUICK TRIGGER (plan …)
+
+HARD RULES
+- Do NOT browse the internet.
+- Do NOT use external images from search results.
+- Only embed images using direct HTTPS URLs that point to the actual image file (png/jpg).
+- Use ONLY the URLs found in the Knowledge file: MRI_Master_Image_Index.md
+- Never embed images by filename alone (no ![](FILENAME.png) unless it is a real https URL).
+- If any required field is missing/invalid, do not guess—return the error message defined below.
+
+WHEN TO RUN THIS RULE
+- If the user message starts with "plan " (case-insensitive) and is short (<= 6 words),
+  treat it as a Quick Trigger key. Examples:
+  "plan 2ch loc", "plan sax loc", "plan 4ch cine", "plan 2ch cine"
+
+LOOKUP
+1) Let TRIGGER = the user message trimmed of leading/trailing spaces (keep internal spacing as typed).
+2) In MRI_Master_Image_Index.md, find the section whose header matches exactly:
+   "## Quick Trigger: {TRIGGER}"
+
+REQUIRED FIELDS (must exist in the matched section)
+- PLAN1_URL
+- PLAN2_URL
+- RESULT_URL
+- BULLETS (one or more bullet lines)
+
+OPTIONAL FIELDS
+- PLAN1_LABEL
+- PLAN2_LABEL
+- TIP_URL
+- TIP_LABEL
+
+VALIDATION
+- PLAN1_URL, PLAN2_URL, RESULT_URL must be https URLs that directly load an image file (png/jpg).
+- TIP_URL (if present) must also be a direct https image URL.
+- BULLETS must contain 1 or more bullet lines.
+
+OUTPUT (NO EXTRA TEXT)
+If validation passes, respond in this exact order:
+
+1) Display PLAN1_URL as an embedded image
+2) Display PLAN2_URL as an embedded image
+3) Output all bullet lines under "BULLETS:" exactly as written (1–N)
+4) If TIP_URL exists and is valid, display TIP_URL as an embedded image
+5) Display RESULT_URL as an embedded image (last)
+
+IMPORTANT FORMATTING RULES
+- Do not add titles, headings, captions, or any extra commentary unless those exact lines already exist inside BULLETS.
+- Preserve the bullet text verbatim (do not rewrite, rephrase, or add/remove punctuation).
+- Do not show PLAN labels unless they are included as bullet lines inside BULLETS.
+
+FAILURE MODE (ONLY THIS LINE)
+If the section is not found OR any required field is missing OR any required URL is invalid:
+Output only:
+Missing/invalid entry in MRI_Master_Image_Index.md for trigger: {TRIGGER}
+
+# MRI_Master_Image_Index.md (v2)
+
+## Notes
+- Prompts must match the header text exactly (example: "plan 2ch cine").
+- Use direct image URLs (recommended: https://raw.githubusercontent.com/...).
+- PLAN1/PLAN2 can be ANY reference views needed for planning.
+- TIP_URL is optional. If present, the GPT should display it between PLAN2 and the bullets (or immediately before RESULT).
+
+---
+
+## Quick Trigger: plan 2ch loc
+PLAN1_LABEL: Axial reference
+PLAN1_URL: https://raw.githubusercontent.com/skyscapesolutionsllc-coder/llm-images/main/2CH_LOC_01_PLAN_AXIAL.png
+PLAN2_LABEL: Sagittal reference
+PLAN2_URL: https://raw.githubusercontent.com/skyscapesolutionsllc-coder/llm-images/main/2CH_LOC_02_PLAN_SAGITTAL.png
+RESULT_LABEL: Resulting 2ch loc image
+RESULT_URL: https://raw.githubusercontent.com/skyscapesolutionsllc-coder/llm-images/main/2CH_LOC_03_RESULT.png
+BULLETS:
+- Angle: parallel to intraventricular septum.
+- Center: Center the positioning block in the left ventricle going through the mitral valve and left ventricular apex.
+
+---
+
+## Quick Trigger: plan sax loc
+PLAN1_LABEL: 2ch loc reference
+PLAN1_URL: https://raw.githubusercontent.com/skyscapesolutionsllc-coder/llm-images/main/SAX_LOC_01_PLAN_ON_2CH_LOC.png
+PLAN2_LABEL: Axial reference
+PLAN2_URL: https://raw.githubusercontent.com/skyscapesolutionsllc-coder/llm-images/main/SAX_LOC_02_PLAN_ON_AXIAL.png
+RESULT_LABEL: Resulting sax loc stack
+RESULT_URL: https://raw.githubusercontent.com/skyscapesolutionsllc-coder/llm-images/main/SAX_LOC_03_RESULT.png
+BULLETS:
+- Orient the planning block perpendicular to the LV long axis (perpendicular to the line running along the center of the mitral valve and the left ventricular apex).
+- Axial: Angle perpendicular to the interventricular septum.
+- Coverage: Cover the heart from the mid-left atrium to the left ventricular apex (8-10 slices).
+
+---
+
+## Quick Trigger: plan 4ch loc
+PLAN1_LABEL: 2ch loc reference
+PLAN1_URL: https://raw.githubusercontent.com/skyscapesolutionsllc-coder/llm-images/main/4CH_LOC_01_PLAN_ON_2CH_LOC.png
+PLAN2_LABEL: sax loc reference
+PLAN2_URL: https://raw.githubusercontent.com/skyscapesolutionsllc-coder/llm-images/main/4CH_LOC_02_PLAN_ON_SAX_LOC.png
+TIP_LABEL: Avoid the aorta on sax view
+TIP_URL: https://raw.githubusercontent.com/skyscapesolutionsllc-coder/llm-images/main/TIP_SAX_AVOID_AORTA.png
+RESULT_LABEL: Resulting 4ch loc image
+RESULT_URL: https://raw.githubusercontent.com/skyscapesolutionsllc-coder/llm-images/main/4CH_LOC_03_RESULT.png
+BULLETS:
+- 2ch loc: Angle parallel to the LV long axis. (parallel to the line running along the center of the mitral valve and the left ventricular apex)
+- sax loc: Angle parallel to the line along the right ventricular apex and the left anterolateral papillary muscle
+- Tip: When planning on sax view, avoid the aorta! (See tip image.)
+
+---
+
+## Quick Trigger: plan 2ch cine
+PLAN1_LABEL: 4ch loc reference
+PLAN1_URL: https://raw.githubusercontent.com/skyscapesolutionsllc-coder/llm-images/main/2CH_CINE_01_PLAN_ON_4CH_LOC.png
+PLAN2_LABEL: sax loc reference
+PLAN2_URL: https://raw.githubusercontent.com/skyscapesolutionsllc-coder/llm-images/main/2CH_CINE_02_PLAN_ON_SAX_LOC.png
+RESULT_LABEL: Resulting 2ch cine image
+RESULT_URL: https://raw.githubusercontent.com/skyscapesolutionsllc-coder/llm-images/main/2CH_CINE_03_RESULT.png
+BULLETS:
+- Angle: parallel to intraventricular septum.
+- Center: Center the positioning block in the left ventricle going through the mitral valve and left ventricular apex.
+
+---
+
+## Quick Trigger: plan 4ch cine
+PLAN1_LABEL: 2ch loc reference
+PLAN1_URL: https://raw.githubusercontent.com/skyscapesolutionsllc-coder/llm-images/main/4CH_CINE_01_PLAN_ON_2CH_LOC.png
+PLAN2_LABEL: sax loc reference
+PLAN2_URL: https://raw.githubusercontent.com/skyscapesolutionsllc-coder/llm-images/main/4CH_CINE_02_PLAN_ON_SAX_LOC.png
+TIP_LABEL: Avoid the aorta on sax view
+TIP_URL: https://raw.githubusercontent.com/skyscapesolutionsllc-coder/llm-images/main/TIP_SAX_AVOID_AORTA.png
+RESULT_LABEL: Resulting 4ch cine image
+RESULT_URL: https://raw.githubusercontent.com/skyscapesolutionsllc-coder/llm-images/main/4CH_CINE_03_RESULT.png
+BULLETS:
+- 2ch loc: Angle parallel to the LV long axis. (parallel to the line running along the center of the mitral valve and the left ventricular apex)
+- sax loc: Angle parallel to the line along the right ventricular apex and the left anterolateral papillary muscle
+- Tip: When planning on sax view, avoid the aorta! (See tip image.)
